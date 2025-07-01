@@ -32,3 +32,6 @@ cloudformation-get-terraform-state-lock-table-name:
 	  --output text \
 	  --region $(AWS_REGION) \
 	  --profile $(AWS_PROFILE)
+
+terragrunt-init:
+	cd infrastructure-live && terragrunt init
