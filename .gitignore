@@ -1,2 +1,4 @@
 .idea/
 .env
+.terragrunt-cache/
+.terraform.lock.hcl
