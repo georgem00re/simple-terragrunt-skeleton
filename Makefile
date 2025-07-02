@@ -17,21 +17,20 @@ cloudformation-delete-stack:
 	  --region $(AWS_REGION) \
 	  --profile $(AWS_PROFILE)
 
-cloudformation-get-terraform-state-bucket-name:
+.PHONY: cloudformation-describe-stack
+cloudformation-describe-stack:
 	@aws cloudformation describe-stacks \
 	  --stack-name $(CLOUDFORMATION_STACK_NAME) \
-	  --query "Stacks[0].Outputs[?OutputKey=='TerraformStateBucketName'].OutputValue" \
+	  --query "Stacks[0].Outputs[?OutputKey=='$(OUTPUT_KEY)'].OutputValue" \
 	  --output text \
 	  --region $(AWS_REGION) \
 	  --profile $(AWS_PROFILE)
 
+cloudformation-get-terraform-state-bucket-name:
+	@$(MAKE) cloudformation-describe-stack OUTPUT_KEY=TerraformStateBucketName
+
 cloudformation-get-terraform-state-lock-table-name:
-	@aws cloudformation describe-stacks \
-	  --stack-name $(CLOUDFORMATION_STACK_NAME) \
-	  --query "Stacks[0].Outputs[?OutputKey=='TerraformStateLockTableName'].OutputValue" \
-	  --output text \
-	  --region $(AWS_REGION) \
-	  --profile $(AWS_PROFILE)
+	@$(MAKE) cloudformation-describe-stack OUTPUT_KEY=TerraformStateLockTableName
 
 terraform-fmt:
 	terraform -chdir=terraform fmt --recursive
