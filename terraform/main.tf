@@ -8,6 +8,14 @@ terraform {
   }
 }
 
-resource "aws_vpc" "example" {
+locals {
+  vpc_name = "${var.environment}-vpc"
+}
+
+resource "aws_vpc" "this" {
   cidr_block = "192.0.0.0/16"
+
+  tags = {
+    Name = local.vpc_name
+  }
 }
