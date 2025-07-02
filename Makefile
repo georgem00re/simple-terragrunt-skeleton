@@ -18,7 +18,7 @@ cloudformation-delete-stack:
 	  --profile $(AWS_PROFILE)
 
 cloudformation-get-terraform-state-bucket-name:
-	aws cloudformation describe-stacks \
+	@aws cloudformation describe-stacks \
 	  --stack-name $(CLOUDFORMATION_STACK_NAME) \
 	  --query "Stacks[0].Outputs[?OutputKey=='TerraformStateBucketName'].OutputValue" \
 	  --output text \
@@ -26,7 +26,7 @@ cloudformation-get-terraform-state-bucket-name:
 	  --profile $(AWS_PROFILE)
 
 cloudformation-get-terraform-state-lock-table-name:
-	aws cloudformation describe-stacks \
+	@aws cloudformation describe-stacks \
 	  --stack-name $(CLOUDFORMATION_STACK_NAME) \
 	  --query "Stacks[0].Outputs[?OutputKey=='TerraformStateLockTableName'].OutputValue" \
 	  --output text \
