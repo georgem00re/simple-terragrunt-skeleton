@@ -33,6 +33,9 @@ cloudformation-get-terraform-state-lock-table-name:
 	  --region $(AWS_REGION) \
 	  --profile $(AWS_PROFILE)
 
+terraform-fmt:
+	terraform -chdir=terraform fmt --recursive
+
 .PHONY: terragrunt-command
 terragrunt-command:
 	TF_STATE_BUCKET_NAME=$$(make --no-print-directory cloudformation-get-terraform-state-bucket-name); \
