@@ -33,5 +33,22 @@ cloudformation-get-terraform-state-lock-table-name:
 	  --region $(AWS_REGION) \
 	  --profile $(AWS_PROFILE)
 
-terragrunt-init:
-	cd infrastructure-live && terragrunt init
+# --- STAGING ---
+terragrunt-init-staging:
+	cd infrastructure-live/staging && terragrunt init
+
+terragrunt-apply-staging:
+	cd infrastructure-live/staging && AWS_PROFILE=$(AWS_PROFILE) AWS_REGION=$(AWS_REGION) terragrunt apply
+
+terragrunt-destroy-staging:
+	cd infrastructure-live/staging && AWS_PROFILE=$(AWS_PROFILE) AWS_REGION=$(AWS_REGION) terragrunt destroy
+
+# --- PRODUCTION ---
+terragrunt-init-production:
+	cd infrastructure-live/production && terragrunt init
+
+terragrunt-apply-production:
+	cd infrastructure-live/production && AWS_PROFILE=$(AWS_PROFILE) AWS_REGION=$(AWS_REGION) terragrunt apply
+
+terragrunt-destroy-staging:
+	cd infrastructure-live/production && AWS_PROFILE=$(AWS_PROFILE) AWS_REGION=$(AWS_REGION) terragrunt destroy
