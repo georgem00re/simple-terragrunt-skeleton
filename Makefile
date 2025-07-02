@@ -33,44 +33,27 @@ cloudformation-get-terraform-state-lock-table-name:
 	  --region $(AWS_REGION) \
 	  --profile $(AWS_PROFILE)
 
+.PHONY: terragrunt-command
+terragrunt-command:
+	TF_STATE_BUCKET_NAME=$$(make --no-print-directory cloudformation-get-terraform-state-bucket-name); \
+	TF_STATE_LOCK_TABLE_NAME=$$(make --no-print-directory cloudformation-get-terraform-state-lock-table-name); \
+	cd infrastructure-live/$(ENV) && \
+	AWS_PROFILE=$(AWS_PROFILE) \
+	AWS_REGION=$(AWS_REGION) \
+	TF_STATE_BUCKET_NAME=$$TF_STATE_BUCKET_NAME \
+	TF_STATE_LOCK_TABLE_NAME=$$TF_STATE_LOCK_TABLE_NAME \
+	terragrunt $(ACTION)
+
 # --- STAGING ---
 terragrunt-apply-staging:
-	TF_STATE_BUCKET_NAME=$$(make --no-print-directory cloudformation-get-terraform-state-bucket-name); \
-	TF_STATE_LOCK_TABLE_NAME=$$(make --no-print-directory cloudformation-get-terraform-state-lock-table-name); \
-	cd infrastructure-live/staging && \
-	AWS_PROFILE=$(AWS_PROFILE) \
-	AWS_REGION=$(AWS_REGION) \
-	TF_STATE_BUCKET_NAME=$$TF_STATE_BUCKET_NAME \
-	TF_STATE_LOCK_TABLE_NAME=$$TF_STATE_LOCK_TABLE_NAME \
-	terragrunt apply
+	$(MAKE) terragrunt-command ACTION=apply ENV=staging
 
 terragrunt-destroy-staging:
-	TF_STATE_BUCKET_NAME=$$(make --no-print-directory cloudformation-get-terraform-state-bucket-name); \
-	TF_STATE_LOCK_TABLE_NAME=$$(make --no-print-directory cloudformation-get-terraform-state-lock-table-name); \
-	cd infrastructure-live/staging && \
-	AWS_PROFILE=$(AWS_PROFILE) \
-	AWS_REGION=$(AWS_REGION) \
-	TF_STATE_BUCKET_NAME=$$TF_STATE_BUCKET_NAME \
-	TF_STATE_LOCK_TABLE_NAME=$$TF_STATE_LOCK_TABLE_NAME \
-	terragrunt destroy
+	$(MAKE) terragrunt-command ACTION=destroy ENV=staging
 
 # --- PRODUCTION ---
 terragrunt-apply-production:
-	TF_STATE_BUCKET_NAME=$$(make --no-print-directory cloudformation-get-terraform-state-bucket-name); \
-	TF_STATE_LOCK_TABLE_NAME=$$(make --no-print-directory cloudformation-get-terraform-state-lock-table-name); \
-	cd infrastructure-live/production && \
-	AWS_PROFILE=$(AWS_PROFILE) \
-	AWS_REGION=$(AWS_REGION) \
-	TF_STATE_BUCKET_NAME=$$TF_STATE_BUCKET_NAME \
-	TF_STATE_LOCK_TABLE_NAME=$$TF_STATE_LOCK_TABLE_NAME \
-	terragrunt apply
+	$(MAKE) terragrunt-command ACTION=apply ENV=production
 
 terragrunt-destroy-production:
-	TF_STATE_BUCKET_NAME=$$(make --no-print-directory cloudformation-get-terraform-state-bucket-name); \
-	TF_STATE_LOCK_TABLE_NAME=$$(make --no-print-directory cloudformation-get-terraform-state-lock-table-name); \
-	cd infrastructure-live/production && \
-	AWS_PROFILE=$(AWS_PROFILE) \
-	AWS_REGION=$(AWS_REGION) \
-	TF_STATE_BUCKET_NAME=$$TF_STATE_BUCKET_NAME \
-	TF_STATE_LOCK_TABLE_NAME=$$TF_STATE_LOCK_TABLE_NAME \
-	terragrunt destroy
+	$(MAKE) terragrunt-command ACTION=destroy ENV=production
