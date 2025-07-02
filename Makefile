@@ -50,5 +50,5 @@ terragrunt-init-production:
 terragrunt-apply-production:
 	cd infrastructure-live/production && AWS_PROFILE=$(AWS_PROFILE) AWS_REGION=$(AWS_REGION) terragrunt apply
 
-terragrunt-destroy-staging:
+terragrunt-destroy-production:
 	cd infrastructure-live/production && AWS_PROFILE=$(AWS_PROFILE) AWS_REGION=$(AWS_REGION) terragrunt destroy
